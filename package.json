@@ -1,6 +1,6 @@
 {
   "name": "logseq-plugin-prune-to-page",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Move selected blocks to a page of your choice, leaving block refs behind so journal provenance is preserved.",
   "main": "dist/index.html",
   "scripts": {
