@@ -8,7 +8,13 @@ location for every block moved, so you keep the provenance — the journal still
 
 ## Install
 
-### Option A: Load unpacked (dev mode)
+### Option A: Logseq Marketplace (recommended once approved)
+
+1. Open the **Plugins** page in Logseq (puzzle-piece icon).
+2. Switch to the **Marketplace** tab.
+3. Search for **Prune to Page** and click **Install**.
+
+### Option B: Load unpacked (dev mode)
 
 1. In Logseq, open **Settings → Advanced** and toggle **Developer mode** on.
 2. Open a terminal in this folder and run:
@@ -22,10 +28,11 @@ location for every block moved, so you keep the provenance — the journal still
    **Load unpacked plugin**, and select this folder (the one containing
    `package.json`).
 
-### Option B: Prebuilt
+### Option C: Prebuilt zip from a Release
 
-If a `dist/` folder is already present, you can skip the build step — just
-toggle Developer mode and "Load unpacked plugin" pointing at this folder.
+Download the `logseq_prune_to_page.zip` asset from the latest
+[GitHub Release](https://github.com/vincentiliano/logseq_prune_to_page/releases),
+unzip it, then "Load unpacked plugin" pointing at the unzipped folder.
 
 ## Usage
 
@@ -68,3 +75,55 @@ auto-generated provenance trail.
   default `moveBlock` behavior).
 - If the target page didn't exist, it's created automatically. If Logseq's
   auto-created "first empty block" ends up unused, the plugin removes it.
+
+## Releasing
+
+Releases are produced by the workflow in `.github/workflows/release.yml`.
+To cut a new release:
+
+1. Bump the `version` field in `package.json` (e.g. `0.1.0` → `0.1.1`).
+2. Commit, then tag the commit with a matching `v` prefix and push the tag:
+
+   ```bash
+   git commit -am "Release v0.1.1"
+   git tag v0.1.1
+   git push origin main --tags
+   ```
+
+3. The workflow builds the plugin and publishes a GitHub Release containing
+   `logseq_prune_to_page.zip`. The Logseq marketplace installer fetches the
+   release zip from this URL pattern.
+
+## Publishing to the Logseq Marketplace
+
+After at least one tagged GitHub Release exists, submit the plugin to the
+[`logseq/marketplace`](https://github.com/logseq/marketplace) repository:
+
+1. Fork `logseq/marketplace`.
+2. Create a new folder under `packages/` named after the plugin id, e.g.
+   `packages/prune-to-page/`.
+3. Add a `manifest.json` in that folder:
+
+   ```json
+   {
+     "title": "Prune to Page",
+     "description": "Move selected blocks to a page of your choice, leaving block refs behind so journal provenance is preserved.",
+     "author": "vincentiliano",
+     "repo": "vincentiliano/logseq_prune_to_page",
+     "icon": "./icon.svg",
+     "theme": false
+   }
+   ```
+
+4. Copy `icon.svg` from this repo into the same `packages/prune-to-page/` folder.
+5. Open a pull request against `logseq/marketplace`. Once it's reviewed and
+   merged, the plugin appears in the Marketplace tab inside Logseq.
+
+A few gotchas to verify before submitting:
+
+- The `repo` field must be exactly `<owner>/<repo>` and must match a public
+  GitHub repo with at least one Release whose assets include the plugin zip.
+- The release zip must contain `package.json`, `dist/`, `icon.svg`, and
+  `README.md` at its top level — the workflow in this repo already does that.
+- The `id` inside `package.json`'s `logseq` block (`prune-to-page`) is what
+  Logseq uses internally; keep the marketplace folder name in sync with it.
