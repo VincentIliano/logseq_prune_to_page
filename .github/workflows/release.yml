@@ -1,0 +1,46 @@
+name: Release plugin
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build plugin
+        run: npm run build
+
+      - name: Package plugin
+        id: package
+        run: |
+          PLUGIN_NAME=${{ github.event.repository.name }}
+          STAGE_DIR="$RUNNER_TEMP/$PLUGIN_NAME"
+          mkdir -p "$STAGE_DIR"
+          cp -r dist "$STAGE_DIR/"
+          cp icon.svg package.json README.md LICENSE "$STAGE_DIR/"
+          (cd "$RUNNER_TEMP" && zip -r "$GITHUB_WORKSPACE/$PLUGIN_NAME.zip" "$PLUGIN_NAME")
+          echo "zip=$PLUGIN_NAME.zip" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.package.outputs.zip }}
+          generate_release_notes: true

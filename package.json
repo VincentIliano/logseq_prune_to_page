@@ -7,13 +7,36 @@
     "dev": "vite build --watch",
     "build": "vite build"
   },
-  "author": "you",
+  "author": "vincentiliano",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vincentiliano/logseq_prune_to_page.git"
+  },
+  "homepage": "https://github.com/vincentiliano/logseq_prune_to_page#readme",
+  "bugs": {
+    "url": "https://github.com/vincentiliano/logseq_prune_to_page/issues"
+  },
+  "keywords": [
+    "logseq",
+    "logseq-plugin",
+    "plugin",
+    "blocks",
+    "refactor"
+  ],
   "logseq": {
     "id": "prune-to-page",
     "title": "Prune to Page",
-    "icon": "./icon.svg"
+    "icon": "./icon.svg",
+    "main": "dist/index.html"
   },
+  "files": [
+    "dist",
+    "icon.svg",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
   "devDependencies": {
     "@logseq/libs": "^0.0.17",
     "typescript": "^5.4.0",
