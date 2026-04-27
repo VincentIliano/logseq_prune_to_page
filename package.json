@@ -1,0 +1,22 @@
+{
+  "name": "logseq-plugin-prune-to-page",
+  "version": "0.1.0",
+  "description": "Move selected blocks to a page of your choice, leaving block refs behind so journal provenance is preserved.",
+  "main": "dist/index.html",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build"
+  },
+  "author": "you",
+  "license": "MIT",
+  "logseq": {
+    "id": "prune-to-page",
+    "title": "Prune to Page",
+    "icon": "./icon.svg"
+  },
+  "devDependencies": {
+    "@logseq/libs": "^0.0.17",
+    "typescript": "^5.4.0",
+    "vite": "^5.2.0"
+  }
+}
